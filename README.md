@@ -15,4 +15,4 @@ Check out https://blogs.atlassian.com/2013/03/instant-java-provisioning-with-vag
 	$ git clone https://github.com/lwndev/bamboo-vagrant-install.git && cd bamboo-vagrant-install
 	$ vagrant up
 
-Once Bamboo is up and running you can access it at http://localhost:8085 or http://192.168.33.12"
+Once Bamboo is up and running you can access it at http://localhost:8085 or http://192.168.33.12
