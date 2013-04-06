@@ -1,7 +1,7 @@
 bamboo-vagrant-install
 ===================
 
-A project that uses Vagrant and Puppet to create and boot a VirtualBox VM and then to download and install a copy of Bamboo 4.4.5.  
+A project that uses Vagrant and Puppet to create and boot a VirtualBox VM and then download and install a copy of Bamboo 4.4.5.  
 
 ## Notes
 
@@ -10,8 +10,8 @@ A project that uses Vagrant and Puppet to create and boot a VirtualBox VM and th
 
 # Dependencies
 
-1. Vagrant
-2. VirtualBox
+1. [Vagrant](http://downloads.vagrantup.com/)
+2. [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
 # Usage
 
