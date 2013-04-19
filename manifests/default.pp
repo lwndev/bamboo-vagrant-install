@@ -26,7 +26,8 @@ class must-have {
   package { ["vim",
              "curl",
              "git-core",
-             "bash"]:
+             "bash",
+             "ant"]:
     ensure => present,
     require => Exec["apt-get update"],
     before => Apt::Ppa["ppa:webupd8team/java"],
