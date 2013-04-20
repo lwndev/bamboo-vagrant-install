@@ -27,7 +27,8 @@ class must-have {
              "curl",
              "git-core",
              "bash",
-             "ant"]:
+             "ant",
+             "apache2"]:
     ensure => present,
     require => Exec["apt-get update"],
     before => Apt::Ppa["ppa:webupd8team/java"],
