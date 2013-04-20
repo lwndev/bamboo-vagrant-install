@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+
+<!-- =============================================================== -->
+<!-- Configure the Jetty Server                                      -->
+<!--                                                                 -->
+<!-- Documentation of this file format can be found at:              -->
+<!-- http://wiki.eclipse.org/Jetty/Reference/jetty.xml_syntax        -->
+
+
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+
+    <!-- =========================================================== -->
+    <!-- Server Thread Pool                                          -->
+    <!-- =========================================================== -->
+    <!-- Set name="ThreadPool" -->
+    <!-- Default queued blocking threadpool -->
+    <!--New class="org.eclipse.jetty.util.thread.QueuedThreadPool">
+        <Set name="minThreads">10</Set>
+        <Set name="maxThreads">200</Set>
+      </New>
+    </Set-->
+
+    <!-- =========================================================== -->
+    <!-- Set connectors                                              -->
+    <!-- =========================================================== -->
+    <!-- Add and configure a Connector to port 8085               -->
+    <!-- The default port can be changed using: java -Djetty.port=8085   -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <Call name="addConnector">
+        <Arg>
+            <New class="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                <Set name="host"><Property name="jetty.host" /></Set>
+                <Set name="port"><Property name="jetty.port" default="8085"/></Set>
+                <!--<Set name="Host">127.0.0.1</Set>-->
+                <!--<Set name="ConfidentialPort">8443</Set>-->
+                <!--<Set name="IntegralPort">8443</Set>-->
+            </New>
+        </Arg>
+    </Call>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+    <!-- For SSL Connextions use:                                         -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <!--<Call name="addConnector">-->
+    <!--<Arg>-->
+    <!--<New class="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">-->
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+    <!-- Add web applications Context.                                    -->
+    <!-- The default location can be changed using: java -Dbamboo.webapp= -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <Call name="setHandler">
+        <Arg>
+            <New class="org.eclipse.jetty.webapp.WebAppContext">
+                <Arg name="webApp">
+                    <!--SystemProperty name="bamboo.webapp" default="/opt/dev/src/atlassian/bamboo-trunk/components/bamboo-web-app/src/main/webapp"/-->
+                    <SystemProperty name="bamboo.webapp" default="./webapp"/>
+                </Arg>
+                <Arg name="contextPath">/</Arg>
+                <!--<Set name="parentLoaderPriority">true</Set>-->
+                <Set name="defaultsDescriptor">webdefault.xml</Set>
+                <Get name="sessionHandler">
+                    <Set name="sessionManager">
+                        <New class="org.eclipse.jetty.server.session.HashSessionManager">
+                            <Set name="httpOnly">true</Set>        <!-- use M$ http only cookies? -->
+                        </New>
+                    </Set>
+                </Get>
+            </New>
+        </Arg>
+    </Call>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+    <!-- Add Any JNDI Resources                                           -->
+    <!-- The default location can be changed using: java -Dbamboo.webapp= -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+
+    <!--New id="resourceID" class="org.eclipse.jetty.plus.jndi.Resource">
+    <Arg>resourceName</Arg>
+    <Arg>
+      <New class="org.eclipse.jetty.jndi.factories.MailSessionReference">
+        <Set name="user">name</Set>
+        <Set name="password">password</Set>
+        <Set name="properties">
+          <New class="java.util.Properties">
+            <Put name="mail.smtp.host">host</Put>
+            <Put name="mail.from">fromaddress@example.com</Put>
+          </New>
+        </Set>
+      </New>
+    </Arg>
+  </New-->
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+    <!-- Uncomment to enable AJP Support                                  -->
+
+    <!--
+    <Call name="addConnector">
+        <Arg>
+            <New class="org.eclipse.jetty.ajp.Ajp13SocketConnector">
+                <Set name="port">8009</Set>
+            </New>
+        </Arg>
+    </Call>
+    -->
+
+</Configure>

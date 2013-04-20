@@ -59,6 +59,24 @@ class must-have {
     require => Exec["download_bamboo"],
   }
 
+  file { "bamboo.jetty.xml":
+    path => "${bamboo_install}/webapp/WEB-INF/classes/jetty.xml",
+    content => template('bamboo/bamboo.jetty.xml'),
+    require => File["bamboo.wrapper.conf"],
+  }
+
+  exec { "/usr/sbin/a2enmod proxy":
+    unless => "/bin/readlink -e /etc/apache2/mods-enabled/proxy.load",
+    notify => Exec["reload-apache2"],
+    require => File["httpd.conf"],
+  }
+
+  exec { "/usr/sbin/a2enmod proxy_http":
+    unless => "/bin/readlink -e /etc/apache2/mods-enabled/proxy_http.load",
+    notify => Exec["reload-apache2"],
+    require => File["httpd.conf"],
+  }
+
   exec {
     "accept_license":
     command => "echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections && echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections",
@@ -111,6 +129,29 @@ class must-have {
     line => "Run Bamboo with: BAMBOO_HOME=${bamboo_home} /vagrant/atlassian-bamboo-${bamboo_version}/bamboo.sh",
     require => Exec["start_bamboo_in_background"],
   }
+
+  # Notify this when apache needs a reload. This is only needed when
+   # sites are added or removed, since a full restart then would be
+   # a waste of time. When the module-config changes, a force-reload is
+   # needed.
+   exec { "reload-apache2":
+      command => "/etc/init.d/apache2 reload",
+      refreshonly => true,
+   }
+
+   exec { "force-reload-apache2":
+      command => "/etc/init.d/apache2 force-reload",
+      refreshonly => true,
+   }
+
+   # We want to make sure that Apache2 is running.
+   service { "apache2":
+      ensure => running,
+      hasstatus => true,
+      hasrestart => true,
+      require => Package["apache2"],
+   }
+
 }
 
 include must-have
