@@ -10,8 +10,10 @@ class must-have {
   include apt
   apt::ppa { "ppa:webupd8team/java": }
 
-  $bamboo_home = "/vagrant/bamboo-home"
   $bamboo_version = "4.4.5"
+  $bamboo_install = "/vagrant/atlassian-bamboo-${bamboo_version}"
+  $bamboo_home = "/vagrant/bamboo-home"
+  
 
   exec { 'apt-get update':
     command => '/usr/bin/apt-get update',
@@ -43,6 +45,18 @@ class must-have {
     path => "/vagrant/atlassian-bamboo-${bamboo_version}/webapp/WEB-INF/classes/bamboo-init.properties",
     content => "bamboo.home=${bamboo_home}",
     require => Exec["create_bamboo_home"],
+  }
+
+  file { "httpd.conf":
+    path => "/etc/apache2/httpd.conf",
+    content => template('bamboo/bamboo.httpd.conf'),
+    require => Package["apache2"],
+  }
+
+  file { "bamboo.wrapper.conf":
+    path => "${bamboo_install}/conf/wrapper.conf",
+    content => template('bamboo/bamboo.wrapper.conf'),
+    require => Exec["download_bamboo"],
   }
 
   exec {
