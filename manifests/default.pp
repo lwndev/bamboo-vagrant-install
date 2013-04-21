@@ -8,6 +8,8 @@ define append_if_no_such_line($file, $line, $refreshonly = 'false') {
 
 class must-have {
   include apt
+  include postgresql::server
+
   apt::ppa { "ppa:webupd8team/java": }
 
   $bamboo_version = "4.4.5"
@@ -34,6 +36,12 @@ class must-have {
     ensure => present,
     require => Exec["apt-get update"],
     before => Apt::Ppa["ppa:webupd8team/java"],
+  }
+
+  postgresql::db { 'bamboo':
+    user     => 'bamboo',
+    password => 'bamboo',
+    require  => Exec['create_bamboo_home'],
   }
 
   package { ["oracle-java7-installer"]:
