@@ -88,8 +88,6 @@ class must-have {
   exec {
     "accept_license":
     command => "echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections && echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections",
-    cwd => "/home/vagrant",
-    user => "vagrant",
     path    => "/usr/bin/:/bin/",
     require => Package["curl"],
     before => Package["oracle-java7-installer"],
@@ -98,7 +96,7 @@ class must-have {
 
   exec {
     "download_bamboo":
-    command => "curl -L http://www.atlassian.com/software/bamboo/downloads/binary/atlassian-bamboo-${bamboo_version}.tar.gz | tar zx",
+    command => "sudo curl -L http://www.atlassian.com/software/bamboo/downloads/binary/atlassian-bamboo-${bamboo_version}.tar.gz | sudo tar zx",
     cwd => "/vagrant",
     user => "vagrant",
     path    => "/usr/bin/:/bin/",
@@ -109,7 +107,7 @@ class must-have {
 
   exec {
     "create_bamboo_home":
-    command => "mkdir -p ${bamboo_home}",
+    command => "sudo mkdir -p ${bamboo_home}",
     cwd => "/vagrant",
     user => "vagrant",
     path    => "/usr/bin/:/bin/",
@@ -121,7 +119,7 @@ class must-have {
   exec {
     "start_bamboo_in_background":
     environment => "BAMBOO_HOME=${bamboo_home}",
-    command => "/vagrant/atlassian-bamboo-${bamboo_version}/bamboo.sh start &",
+    command => "sudo /vagrant/atlassian-bamboo-${bamboo_version}/bamboo.sh start &",
     cwd => "/vagrant",
     user => "vagrant",
     path    => "/usr/bin/:/bin/",
