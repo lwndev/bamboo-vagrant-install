@@ -32,6 +32,7 @@ class must-have {
              "git-core",
              "bash",
              "ant",
+             "maven",
              "apache2"]:
     ensure => present,
     require => Exec["apt-get update"],
