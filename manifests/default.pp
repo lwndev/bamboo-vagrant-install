@@ -33,6 +33,7 @@ class must-have {
              "bash",
              "ant",
              "maven",
+             "phantomjs",
              "apache2"]:
     ensure => present,
     require => Exec["apt-get update"],
