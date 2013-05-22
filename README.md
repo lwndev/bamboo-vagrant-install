@@ -32,4 +32,4 @@ Once Bamboo is up and running you can access it at http://192.168.33.12
 	$ git clone https://github.com/lwndev/bamboo-vagrant-install.git && cd bamboo-vagrant-install
 	$ vagrant up --provider=aws
 
-Once Bamboo is up and running you can access it using the URL pro
+Once Bamboo is up and running you can access it using the URL provided by Amazon in your AWS Management console.
