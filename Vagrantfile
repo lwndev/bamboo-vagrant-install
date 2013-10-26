@@ -6,9 +6,6 @@ Vagrant.configure("2") do |config|
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
-  config.vm.provision :shell,
-       :inline => "sudo useradd -d /home/vagrant -m vagrant; sudo adduser vagrant sudo"
-
   # Every Vagrant virtual environment requires a box to build off of.
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.

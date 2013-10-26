@@ -12,7 +12,7 @@ class must-have {
 
   apt::ppa { "ppa:webupd8team/java": }
 
-  $bamboo_version = "4.4.5"
+  $bamboo_version = "5.2"
   $bamboo_install = "/vagrant/atlassian-bamboo-${bamboo_version}"
   $bamboo_home = "/vagrant/bamboo-home"
   
@@ -51,7 +51,7 @@ class must-have {
   }
 
   file { "bamboo.properties":
-    path => "/vagrant/atlassian-bamboo-${bamboo_version}/webapp/WEB-INF/classes/bamboo-init.properties",
+    path => "/vagrant/atlassian-bamboo-${bamboo_version}/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties",
     content => "bamboo.home=${bamboo_home}",
     require => Exec["create_bamboo_home"],
   }
@@ -66,12 +66,6 @@ class must-have {
     path => "${bamboo_install}/conf/wrapper.conf",
     content => template('bamboo/bamboo.wrapper.conf'),
     require => Exec["download_bamboo"],
-  }
-
-  file { "bamboo.jetty.xml":
-    path => "${bamboo_install}/webapp/WEB-INF/classes/jetty.xml",
-    content => template('bamboo/bamboo.jetty.xml'),
-    require => File["bamboo.wrapper.conf"],
   }
 
   exec { "/usr/sbin/a2enmod proxy":
@@ -120,7 +114,7 @@ class must-have {
   exec {
     "start_bamboo_in_background":
     environment => "BAMBOO_HOME=${bamboo_home}",
-    command => "sudo /vagrant/atlassian-bamboo-${bamboo_version}/bamboo.sh start &",
+    command => "sudo /vagrant/atlassian-bamboo-${bamboo_version}/bin/start-bamboo.sh &",
     cwd => "/vagrant",
     user => "vagrant",
     path    => "/usr/bin/:/bin/",
